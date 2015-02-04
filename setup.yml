@@ -2,6 +2,7 @@
 - hosts: all
   sudo: yes
   roles:
+          - { role: magnus919.epel, when: ansible_distribution == 'CentOS' }
           - common
 
 - hosts: etcd
