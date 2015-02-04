@@ -3,6 +3,7 @@
   shell: "grep 'Fedora release 20 (Heisenbug)' /etc/fedora-release"
   register: is_f20
   ignore_errors: yes
+  always_run: true
   changed_when: false
 
 - name: Remove docker window manager on F20

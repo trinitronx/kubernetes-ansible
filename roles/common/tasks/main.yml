@@ -2,12 +2,14 @@
 - name: Determine if Atomic
   command: "grep Atomic /etc/redhat-release"
   register: is_atomic
+  always_run: true
   ignore_errors: yes
   changed_when: false
 
 - name: Determine if RHEL7
   shell: "grep 'Red Hat Enterprise Linux.*release 7' /etc/redhat-release"
   register: is_rhel7
+  always_run: true
   ignore_errors: yes
   changed_when: false
 
@@ -17,11 +19,13 @@
 - name: Determine if firewalld installed
   command: "rpm -q firewalld"
   register: has_firewalld
+  always_run: true
   ignore_errors: yes
   changed_when: false
 
 - name: Determine if iptables-services installed
   command: "rpm -q iptables-services"
   register: has_iptables
+  always_run: true
   ignore_errors: yes
   changed_when: false
