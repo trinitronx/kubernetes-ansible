@@ -1,10 +1,10 @@
 [masters]
-10.0.0.1
+#10.0.142.22
+kub00.dev.returnpath.net
 
 [etcd]
-10.0.0.2
+kub00.dev.returnpath.net
 
 [minions]
-10.0.0.3
-10.0.0.4
-10.0.0.5
+kub01.dev.returnpath.net kube_ip_addr=10.0.10.0/24
+#kub02.dev.returnpath.net
