@@ -28,3 +28,4 @@
   roles:
           - kubernetes
           - minion
+          - docker
