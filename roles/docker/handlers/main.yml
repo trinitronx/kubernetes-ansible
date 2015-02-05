@@ -1,0 +1,8 @@
+---
+# docker: entry point for handlers
+ - name: restart docker
+   sudo: yes
+   service: >
+     name=docker{% if ansible_os_family == 'Debian' %}.io{% endif %}
+     state=restarted
+     enabled=yes

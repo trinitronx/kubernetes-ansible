@@ -1,0 +1,60 @@
+---
+# tasks file for installing docker via binary
+
+## Hack to install docker package first to avoid missing dependencies
+# - name: Install EPEL 6.8 repos
+#   yum: >
+#     name={{ docker_yum_repo_url }}
+#     state=present
+#   tags: packages
+#   when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int == 6
+
+# - name: Install Docker.io package via yum
+#   yum: >
+#     name=docker-io-1.3.2
+#     state=present
+#   tags: packages
+
+#- name: Install docker dependencies
+#  yum: >
+#    name={{ item }}
+#    state=latest
+#  with_items:
+#    - bridge-utils
+#    - device-mapper
+#    - device-mapper-libs
+#    - libcgroup
+#    - lua-alt-getopt
+#    - lua-filesystem
+#    - lua-lxc
+#    - lxc
+#    - lxc-libs
+#    - xz
+#    - xz-libs
+#    - device-mapper-libs
+#  tags: packages
+## TODO: remove/fix this ^^^
+
+- name: Install docker binary
+  get_url: >
+    dest=/usr/bin/docker-{% if docker_install_latest is defined and docker_version is not defined %}latest{% else %}{{ docker_version }}{% endif %}
+    url={{ docker_binary_url }}
+    sha256sum={{ docker_binary_sha256sum }}
+    owner=root
+    group=root
+    mode=755
+  tags: packages
+
+- name: Copy docker binary to install location
+  file: >
+    src=/usr/bin/docker-{% if docker_install_latest is defined and docker_version is not defined %}latest{% else %}{{ docker_version }}{% endif %}
+    name=/usr/bin/docker
+    state=link
+    force={{ docker_force_binary_install }}
+- name: Install docker init script for platform
+  copy: >
+    src=docker.init.{{ ansible_os_family }}
+    dest=/etc/init.d/docker
+    owner=root
+    group=root
+    mode=755

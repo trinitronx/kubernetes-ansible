@@ -1,0 +1,48 @@
+---
+driver:
+    name: vagrant
+
+provisioner:
+#  ansible_platform: ubuntu
+  name: ansible_playbook
+#  roles_path:
+  hosts: test-kitchen
+  require_ansible_repo: true
+#  ansible_check: true
+  ansible_diff: true
+  ansible_verbose: true
+  ansible_verbosity: 2
+  sudo: true
+  # playbook: default.yml
+  extra_vars:
+    a: b
+
+platforms:
+  #- name: ubuntu-10.04 # lucid
+  - name: ubuntu-12.04 # precise
+  - name: ubuntu-13.10 # saucy
+  - name: ubuntu-14.04 # trusty
+  # - name: ubuntu-14.10 # utopic ## No bento box yet... Official Scheduled Release: October 23rd 2014
+  # - name: centos-5.10 # TODO: NOT TESTED YET... unsure if kitchen-ansible works yet...
+  - name: centos-6.4
+  - name: centos-6.5
+  # - name: centos-7.0 # TODO: Needs work to fix kitchen-ansible repo to use
+  # - name: nocm_centos-6.5
+  #   driver_plugin: vagrant
+  #   driver_config:
+  #     box: nocm_centos-6.5
+  #     box_url: http://puppet-vagrant-boxes.puppetlabs.com/centos-65-x64-virtualbox-nocm.box
+      # network:
+      #  - ['forwarded_port', {guest: 8080, host: 8080}]
+      #  - [ 'private_network', { ip: '192.168.33.11' } ]
+
+suites:
+ - name: default
+ - name: binary-install
+   provisioner:
+     extra_vars:
+       docker_install_method: binary
+       docker_prefix: /usr/local
+       docker_version: 1.3.3
+       docker_other_args: -g /usr/local/lib/docker
+       docker_binary_sha256sum: d1976eba48b73a35a29e14c3446c9a5a67c35a25f2c32765ac27340a7a1e0961

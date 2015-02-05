@@ -1,0 +1,17 @@
+---
+# tasks file for installing docker on apt based distros
+
+# - name: Check if /etc/default exists
+#   stat: path=/etc/default
+#   register: check_etc_default
+
+# - name: It exists
+#   debug: msg='Yay, /etc/default exists!'
+#   when: check_etc_default.stat.exists
+
+- name: Install Docker package via apt
+  apt: >
+    name=docker.io{% if docker_version is defined %}={{ docker_version }}{% endif %}
+    state={% if docker_install_latest is defined and docker_version is not defined %}latest{% else %}present{% endif %}
+  tags: packages
+

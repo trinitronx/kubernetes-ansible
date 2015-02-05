@@ -1,0 +1,24 @@
+---
+# No version specifier on homebrew module... :-/
+# but if you're using it on OSX you're probably a developer so latest is probably preferred
+# Also, you must use boot2docker in a VM with docker client outside
+# Either boot2docker or dvm can be used for this purpose
+
+- name: Install dvm/boot2docker dependencies
+  homebrew_cask: >
+    name={{ item }}
+    state=present
+  with_items:
+    - virtualbox
+    - vagrant
+
+- name: Tap homebrew fnichol/dvm
+  homebrew_tap: >
+    name=fnichol/dvm
+    state=present
+
+- homebrew: name={{ item }} state=latest
+  with_items:
+    - docker
+    - boot2docker
+    - dvm

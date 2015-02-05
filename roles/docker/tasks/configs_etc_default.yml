@@ -1,0 +1,25 @@
+---
+# tasks file for installing docker configs on apt based distros (with /etc/default/)
+- name: Check if /etc/default exists
+  stat: path=/etc/default
+  register: check_etc_default
+
+# - name: It exists
+#   debug: msg='Yay, /etc/default exists!'
+#   when: check_etc_default.stat.exists
+
+- name: Write out docker /etc/default variable environment file
+  template: >
+    src=sysconfig.docker.j2
+    dest=/etc/default/docker
+  when: ansible_os_family == "Debian"
+  notify: restart docker
+  tags: files
+
+- name: Write out docker /etc/default storage variable environment file
+  template: >
+    src=sysconfig.docker-storage.j2
+    dest=/etc/default/docker-storage
+  when: ansible_os_family == "Debian" and check_etc_default.stat.exists
+  notify: restart docker
+  tags: files

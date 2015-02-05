@@ -1,0 +1,46 @@
+---
+# docker: Tasks entry point. Called by main.yml
+- name: "Ensure system is x86_64"
+  fail: msg="Docker requires a 64bit system architecture"
+  when: "ansible_architecture != 'x86_64'"
+
+- name: Create {{ docker_prefix }}/lib/docker
+  file: >
+    name={{ docker_prefix }}/lib/docker
+    state=directory
+    mode=700
+    owner=root
+    group=root
+  tags: files
+  when: docker_prefix is defined and ansible_os_family != 'Darwin'
+
+- name: "Create Symlink: /var/lib/docker -> {{ docker_prefix }}/lib/docker"
+  file: >
+    name=/var/lib/docker
+    src={{ docker_prefix }}/lib/docker
+    state=link
+    owner=root
+    group=root
+  tags: files
+  when: docker_prefix is defined and ansible_os_family != 'Darwin'
+
+- include: apt_package.yml
+  when: ansible_pkg_mgr == 'apt' and docker_install_method == 'package'
+- include: yum_package.yml
+  when: ansible_pkg_mgr == 'yum' and docker_install_method == 'package'
+- include: homebrew_package.yml
+  when: ansible_os_family == 'Darwin' and docker_install_method == 'package'
+- include: binary_install.yml
+  when: docker_install_method == 'binary' and docker_install_method == 'binary'
+- include: configs_etc_default.yml
+  when: ansible_os_family == "Debian"
+- include: configs_etc_sysconfig.yml
+  when: ansible_os_family == "RedHat"
+
+- name: Enable docker service
+  service: >
+    name=docker{% if ansible_os_family == 'Debian' %}.io{% endif %}
+    state=started
+    enabled=yes
+  tags: packages
+  when: ansible_os_family != 'Darwin'

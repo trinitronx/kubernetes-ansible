@@ -1,0 +1,25 @@
+---
+# tasks file for installing docker configs on yum based distros (with /etc/sysconfig/)
+# - name: Check if /etc/sysconfig exists
+#   stat: path=/etc/sysconfig
+#   register: check_etc_sysconfig
+
+# - name: It exists
+#   debug: msg='Yay, /etc/sysconfig exists!'
+#   when: check_etc_sysconfig.stat.exists
+
+- name: Write out docker /etc/sysconfig/docker variable environment file
+  template: >
+    src=sysconfig.docker.j2
+    dest=/etc/sysconfig/docker
+  when: ansible_os_family == "RedHat"
+  notify: restart docker
+  tags: files
+
+- name: Write out docker /etc/sysconfig storage variable environment file
+  template: >
+    src=sysconfig.docker-storage.j2
+    dest=/etc/sysconfig/docker-storage
+  when: ansible_os_family == "RedHat"
+  notify: restart docker
+  tags: files

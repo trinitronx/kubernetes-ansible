@@ -1,0 +1,9 @@
+---
+# docker: entry point for defaults
+docker_install_method: package
+docker_force_binary_install: false
+docker_other_args: ""
+docker_storage_options: ""
+docker_yum_repo_url: http://dl.fedoraproject.org/pub/epel/{{ ansible_distribution_major_version }}/{{ ansible_architecture }}/epel-release-6-8.noarch.rpm
+docker_binary_url: https://get.docker.com/builds/Linux/x86_64/docker-{% if docker_install_latest is defined and docker_version is not defined %}latest{% else %}{{ docker_version }}{% endif %}
+docker_binary_sha256sum: b4fb75be087eafe6cda26038a045854ab2d497adad9276a45c37d7d55da764fc

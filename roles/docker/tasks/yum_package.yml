@@ -1,0 +1,20 @@
+---
+# tasks file for installing docker on yum based distros
+- name: Install EPEL 6.8 repos
+  yum: >
+    name={{ docker_yum_repo_url }}
+    state=present
+  tags: packages
+  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int == 6
+
+- name: Install Docker.io package via yum
+  yum: >
+    name=docker-io{% if docker_version is defined %}-{{ docker_version }}{% endif %}
+    state={% if docker_install_latest is defined and docker_version is not defined %}latest{% else %}present{% endif %}
+  tags: packages
+
+- name: Update libdevmapper
+  yum: >
+    name=device-mapper-libs
+    state=latest
+  tags: packages
