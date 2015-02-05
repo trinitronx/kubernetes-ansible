@@ -7,6 +7,8 @@
 
 - name: Enable the RHEL7 Kubernetes copr repo
   copy: src=eparis-kubernetes-epel-7.repo dest=/etc/yum.repos.d/eparis-kubernetes-epel-7.repo
+  tags: eparis_repos
 
 - name: Enable eparis extra repo
   copy: src=eparis-extras.repo dest=/etc/yum.repos.d/eparis-extras.repo
+  tags: eparis_repos
