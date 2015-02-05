@@ -2,3 +2,16 @@ ansible_ssh_user: rpcm
 kube_service_addresses: 10.254.0.0/16 # MUST be defined as a range not used in your infrastructure
 kube_overlay_ip: 4.0.0.0 # defined if using flannel as the overlay network
 kube_overlay_prefix: 16 # defined if using flannel as the overlay network
+
+
+# Docker-stuff
+docker_version: 1.4.1
+docker_install_method: binary
+docker_force_binary_install: true
+docker_binary_sha256sum: b4fb75be087eafe6cda26038a045854ab2d497adad9276a45c37d7d55da764fc
+#fig_version: 1.0.1
+#fig_checksum: 43e4990c8516efdaa0bf0120c28a59c7f2103ca8aa9d2fd33d7c4f7c62f8869a
+
+#docker_prefix: /usr/local
+#docker_yum_repo_url: http://{{ yum_repo_host }}/src/epel-release-6-8.noarch.rpm
+#docker_other_args: -g /usr/local/lib/docker
