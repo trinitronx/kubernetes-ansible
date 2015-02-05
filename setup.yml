@@ -1,8 +1,15 @@
 ---
 - hosts: all
   sudo: yes
+  pre_tasks:
+    - name: Install libselinux-python if CentOS 7
+      yum: >
+        name=libselinux-python
+        state=present
+      when: ansible_distribution == 'CentOS'
+      tags: epel
   roles:
-          - { role: magnus919.epel, when: ansible_distribution == 'CentOS' }
+          - { role: magnus919.epel, when: ansible_distribution == 'CentOS', tags: epel }
           - common
 
 - hosts: etcd
